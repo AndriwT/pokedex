@@ -4,21 +4,8 @@ import axios from "axios";
 const PokedexPage = () => {
   const [pokemon, setPokemon] = useState();
   const [bio, setBio] = useState("");
+  const [evolution, setEvolution] = useState();
   const [search, setSearch] = useState("");
-
-  // const getPokemon = async (name) => {
-  //   const url = `https://pokeapi.co/api/v2/pokemon/${name}`;
-  //   const res = await fetch(url);
-  //   await setPokemon(res.json());
-  // };
-
-  // useEffect(
-  //   (pokemon) => {
-  //     console.log(pokemon);
-  //     // getPokemon();
-  //   },
-  //   [pokemon]
-  // );
 
   const getPokemon = async (name) => {
     await axios
@@ -37,6 +24,7 @@ const PokedexPage = () => {
       .get(`https://pokeapi.co/api/v2/pokemon-species/${name}/`)
       .then((response) => {
         setBio(response.data);
+        getEvolution(response.data.evolution_chain.url);
         console.log(response.data);
       })
       .catch((error) => {
@@ -44,14 +32,45 @@ const PokedexPage = () => {
       });
   };
 
+  const getEvolution = async (url) => {
+    await axios
+      .get(url)
+      .then((response) => {
+        setEvolution(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching data: ", error);
+      });
+  };
+
+  const getPokemonNextEvolution = () => {
+    // let evolutionChain = evolution && evolution.chain.evolves_to;
+    if (evolution && evolution.chain.evolves_to.length !== 0) {
+      if (evolution && evolution.chain.species.name === pokemon.name) {
+        return evolution && evolution.chain.evolves_to[0].species.name;
+      } else if (
+        evolution &&
+        evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        evolution.chain.evolves_to[0].evolves_to.length !== 0
+      ) {
+        return (
+          evolution && evolution.chain.evolves_to[0].evolves_to[0].species.name
+        );
+      } else {
+        return null;
+      }
+    }
+  };
+
   const handleChange = (event) => {
     setSearch(event.target.value);
   };
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
-    getPokemon(search);
-    getBio(search);
+    await getPokemon(search);
+    await getBio(search);
   };
 
   return (
@@ -71,7 +90,10 @@ const PokedexPage = () => {
                 <div className="red-dot"></div>
               </div>
               <div className="left-screen">
-                <img src={pokemon && pokemon.sprites.front_default} />
+                <img
+                  src={pokemon && pokemon.sprites.front_default}
+                  atl="Front default image of the Pokemon searched"
+                />
               </div>
               <form>
                 <input
@@ -113,12 +135,14 @@ const PokedexPage = () => {
           <div className="evolution-container">
             <div className="evolves">
               <h3 className="capitalize-me">
-                {bio && bio.evolves_from_species
+                {bio && bio.evolves_from_species !== null
                   ? bio.evolves_from_species.name
                   : null}
               </h3>
             </div>
-            <div className="evolves"></div>
+            <div className="evolves">
+              <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
+            </div>
           </div>
           <div className="types-container">
             <div className="type">
@@ -141,10 +165,3 @@ const PokedexPage = () => {
 };
 
 export default PokedexPage;
-
-// <img src={pokemon && pokemon.sprites.front_default} />
-//       <p>{pokemon && pokemon.name}</p>
-//       <p>{pokemon && pokemon.id}</p>
-//       <p>{pokemon && pokemon.types[0].type.name}</p>
-//       <p>{pokemon && pokemon.height}</p>
-//       <p>{pokemon && pokemon.weight}</p>
