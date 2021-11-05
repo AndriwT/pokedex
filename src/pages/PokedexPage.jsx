@@ -47,28 +47,23 @@ const PokedexPage = () => {
   const getPokemonNextEvolution = () => {
     // let evolutionChain = evolution && evolution.chain.evolves_to;
     if (evolution && evolution.chain.evolves_to.length !== 0) {
-      if (evolution && evolution.chain.species.name === pokemon.name) {
-        return evolution && evolution.chain.evolves_to[0].species.name;
+      if (
+        evolution &&
+        evolution.chain.species.name === pokemon.name &&
+        evolution.chain.evolves_to[1]?.species?.name
+      ) {
+        return `${evolution.chain.evolves_to[0].species.name}
+        or
+        ${evolution.chain.evolves_to[1].species.name}`;
       } else if (
         evolution &&
         evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        evolution.chain.evolves_to[0].evolves_to[1]?.species?.name &&
         evolution.chain.evolves_to[0].evolves_to.length !== 0
       ) {
-        return (
-          evolution && evolution.chain.evolves_to[0].evolves_to[0].species.name
-        );
-      } else if (
-        evolution &&
-        evolution.chain.evolves_to[0].evolves_to[1] &&
-        evolution.chain.evolves_to[0].species.name === pokemon.name &&
-        evolution.chain.evolves_to[0].evolves_to.length !== 0
-      ) {
-        return (
-          evolution &&
-          evolution.chain.evolves_to[0].evolves_to[0].species.name &&
-          evolution &&
-          evolution.chain.evolves_to[0].evolves_to[1].species.name
-        );
+        return `${evolution.chain.evolves_to[0].evolves_to[0].species.name}
+        or
+        ${evolution.chain.evolves_to[0].evolves_to[1].species.name}`;
       } else {
         return null;
       }
@@ -160,7 +155,8 @@ const PokedexPage = () => {
               {pokemon && pokemon.name} {pokemon && pokemon.id}
             </h1>
             <p style={{ width: "90%" }}>
-              {bio && bio.flavor_text_entries[1].flavor_text}
+              {(bio && bio.flavor_text_entries[1]?.flavor_text) ||
+                (bio && bio.flavor_text_entries[6]?.flavor_text)}
             </p>
           </div>
           <div className="little-screens">

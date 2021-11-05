@@ -39,7 +39,7 @@
   }
 }
 
-.capitalize-me::first-letter {
+.capitalize-me {
   text-transform: capitalize;
 }
 
