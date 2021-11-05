@@ -57,6 +57,52 @@ const PokedexPage = () => {
         return (
           evolution && evolution.chain.evolves_to[0].evolves_to[0].species.name
         );
+      } else if (
+        evolution &&
+        evolution.chain.evolves_to[0].evolves_to[1] &&
+        evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        evolution.chain.evolves_to[0].evolves_to.length !== 0
+      ) {
+        return (
+          evolution &&
+          evolution.chain.evolves_to[0].evolves_to[0].species.name &&
+          evolution &&
+          evolution.chain.evolves_to[0].evolves_to[1].species.name
+        );
+      } else {
+        return null;
+      }
+    }
+  };
+
+  const getPokemonNextEvolutionDetails = () => {
+    // let evolutionChain = evolution && evolution.chain.evolves_to;
+    if (evolution && evolution.chain.evolves_to.length !== 0) {
+      if (evolution && evolution.chain.species.name === pokemon.name) {
+        console.log(pokemon);
+        const minLevel =
+          evolution.chain.evolves_to[0].evolution_details[0]?.min_level;
+        const itemName =
+          evolution.chain.evolves_to[0].evolution_details[0]?.item?.name;
+        const triggerName =
+          evolution.chain.evolves_to[0].evolution_details[0]?.trigger?.name;
+        return minLevel || itemName || triggerName;
+      } else if (
+        evolution &&
+        evolution.chain.evolves_to[0].evolves_to[0].evolution_details[0] &&
+        evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        evolution.chain.evolves_to[0].evolves_to.length !== 0
+      ) {
+        const minLevel =
+          evolution.chain.evolves_to[0].evolves_to[0].evolution_details[0]
+            ?.min_level;
+        const itemName =
+          evolution.chain.evolves_to[0].evolves_to[0].evolution_details[0]?.item
+            ?.name;
+        const triggerName =
+          evolution.chain.evolves_to[0].evolves_to[0].evolution_details[0]
+            ?.trigger?.name;
+        return minLevel || itemName || triggerName;
       } else {
         return null;
       }
@@ -139,6 +185,10 @@ const PokedexPage = () => {
                   ? bio.evolves_from_species.name
                   : null}
               </h3>
+            </div>
+            <div className="">
+              <p>Evolves By:</p>
+              {/* <span>{getPokemonNextEvolutionDetails()}</span> */}
             </div>
             <div className="evolves">
               <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
