@@ -47,14 +47,8 @@ const PokedexPage = () => {
   const getPokemonNextEvolution = () => {
     // let evolutionChain = evolution && evolution.chain.evolves_to;
     if (evolution && evolution.chain.evolves_to.length !== 0) {
-      if (
-        evolution &&
-        evolution.chain.species.name === pokemon.name &&
-        evolution.chain.evolves_to[1]?.species?.name
-      ) {
-        return `${evolution.chain.evolves_to[0].species.name}
-        or
-        ${evolution.chain.evolves_to[1].species.name}`;
+      if (evolution && evolution.chain.species.name === pokemon.name) {
+        return evolution.chain.evolves_to[0].species.name;
       } else if (
         evolution &&
         evolution.chain.evolves_to[0].species.name === pokemon.name &&
