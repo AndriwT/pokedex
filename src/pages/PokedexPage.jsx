@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const PokedexPage = () => {
@@ -6,6 +6,23 @@ const PokedexPage = () => {
   const [bio, setBio] = useState("");
   const [evolution, setEvolution] = useState();
   const [search, setSearch] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (bio && bio.flavor_text_entries[1].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[1].flavor_text);
+    } else if (bio && bio.flavor_text_entries[6].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[6].flavor_text);
+    } else if (bio && bio.flavor_text_entries[7].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[7].flavor_text);
+    } else if (bio && bio.flavor_text_entries[8].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[8].flavor_text);
+    } else if (bio && bio.flavor_text_entries[15].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[15].flavor_text);
+    } else if (bio && bio.flavor_text_entries[70].language.name === "en") {
+      setDescription(bio && bio.flavor_text_entries[70].flavor_text);
+    }
+  }, [bio]);
 
   const getPokemon = async (name) => {
     await axios
@@ -47,10 +64,25 @@ const PokedexPage = () => {
   const getPokemonNextEvolution = () => {
     // let evolutionChain = evolution && evolution.chain.evolves_to;
     if (evolution && evolution.chain.evolves_to.length !== 0) {
-      if (evolution && evolution.chain.species.name === pokemon.name) {
+      if (
+        evolution.chain.species.name === pokemon.name &&
+        evolution.chain.evolves_to.length > 1
+      ) {
+        return `${evolution.chain.evolves_to[0].species.name}
+         or 
+         ${evolution.chain.evolves_to[1].species.name}`;
+      } else if (
+        evolution.chain.species.name === pokemon.name &&
+        evolution.chain.evolves_to.length === 1
+      ) {
         return evolution.chain.evolves_to[0].species.name;
       } else if (
-        evolution &&
+        evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        !evolution.chain.evolves_to[0].evolves_to[1]?.species?.name &&
+        evolution.chain.evolves_to[0].evolves_to.length !== 0
+      ) {
+        return evolution.chain.evolves_to[0].evolves_to[0].species.name;
+      } else if (
         evolution.chain.evolves_to[0].species.name === pokemon.name &&
         evolution.chain.evolves_to[0].evolves_to[1]?.species?.name &&
         evolution.chain.evolves_to[0].evolves_to.length !== 0
@@ -148,10 +180,7 @@ const PokedexPage = () => {
             <h1 className="capitalize-me">
               {pokemon && pokemon.name} {pokemon && pokemon.id}
             </h1>
-            <p style={{ width: "90%" }}>
-              {(bio && bio.flavor_text_entries[1]?.flavor_text) ||
-                (bio && bio.flavor_text_entries[6]?.flavor_text)}
-            </p>
+            <p style={{ width: "90%" }}>{description}</p>
           </div>
           <div className="little-screens">
             <div className="little-screen">
