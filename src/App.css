@@ -183,7 +183,25 @@
   align-items: center;
   background-color: aqua;
   border: 2px solid #282c34;
-  width: 97px;
+  width: 130px;
+  height: 35px;
+  border-radius: 3px;
+}
+
+.measurements-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.measurement-screen {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #383d47;
+  border: 2px solid #282c34;
+  width: 90px;
   height: 35px;
   border-radius: 3px;
 }

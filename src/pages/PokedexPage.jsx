@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const PokedexPage = () => {
+  const [search, setSearch] = useState("");
   const [pokemon, setPokemon] = useState();
   const [bio, setBio] = useState("");
-  const [evolution, setEvolution] = useState();
-  const [search, setSearch] = useState("");
   const [description, setDescription] = useState("");
+  const [evolution, setEvolution] = useState();
 
   useEffect(() => {
     if (bio && bio.flavor_text_entries[1].language.name === "en") {
@@ -99,7 +99,7 @@ const PokedexPage = () => {
   const getPokemonNextEvolutionDetails = () => {
     // let evolutionChain = evolution && evolution.chain.evolves_to;
     if (evolution && evolution.chain.evolves_to.length !== 0) {
-      if (evolution && evolution.chain.species.name === pokemon.name) {
+      if (evolution.chain.species.name === pokemon.name) {
         console.log(pokemon);
         const minLevel =
           evolution.chain.evolves_to[0].evolution_details[0]?.min_level;
@@ -110,7 +110,7 @@ const PokedexPage = () => {
         return minLevel || itemName || triggerName;
       } else if (
         evolution &&
-        evolution.chain.evolves_to[0].evolves_to[0].evolution_details[0] &&
+        evolution.chain.evolves_to[0].evolves_to[0]?.evolution_details[0] &&
         evolution.chain.evolves_to[0].species.name === pokemon.name &&
         evolution.chain.evolves_to[0].evolves_to.length !== 0
       ) {
@@ -182,18 +182,41 @@ const PokedexPage = () => {
             </h1>
             <p style={{ width: "90%" }}>{description}</p>
           </div>
-          <div className="little-screens">
+          <div className="little-screens capitalize-me">
             <div className="little-screen">
-              {`Base Exp: ${pokemon && pokemon.base_experience}`}
+              {`${pokemon && pokemon.stats[0].stat.name}: ${
+                pokemon && pokemon.stats[0].base_stat
+              }`}
             </div>
-            <div className="little-screen">{`Height: ${
+            <div className="little-screen">{`${
+              pokemon && pokemon.stats[1].stat.name
+            }: ${pokemon && pokemon.stats[1]?.base_stat}`}</div>
+            <div className="little-screen">{`${
+              pokemon && pokemon.stats[2].stat.name
+            }: ${pokemon && pokemon.stats[2].base_stat}`}</div>
+          </div>
+          <div
+            className="little-screens capitalize-me"
+            style={{ marginTop: 0 }}
+          >
+            <div className="little-screen">{`${
+              pokemon && pokemon.stats[3].stat.name
+            }: ${pokemon && pokemon.stats[3].base_stat}`}</div>
+            <div className="little-screen">{`${
+              pokemon && pokemon.stats[4].stat.name
+            }: ${pokemon && pokemon.stats[4].base_stat}`}</div>
+            <div className="little-screen">{`${
+              pokemon && pokemon.stats[5].stat.name
+            }: ${pokemon && pokemon.stats[5].base_stat}`}</div>
+          </div>
+          <div className="measurements-container">
+            <div className="measurement-screen">{`Height: ${
               pokemon && pokemon.height
             }`}</div>
-            <div className="little-screen">{`Weight: ${
+            <div className="measurement-screen">{`Weight: ${
               pokemon && pokemon.weight
             }`}</div>
-
-            <div className="little-screen">{`Shape: ${
+            <div className="measurement-screen">{`Shape: ${
               bio && bio.shape.name
             }`}</div>
           </div>
@@ -206,8 +229,8 @@ const PokedexPage = () => {
               </h3>
             </div>
             <div className="">
-              <p>Evolves By:</p>
-              {/* <span>{getPokemonNextEvolutionDetails()}</span> */}
+              <p>Evolution Level or Trigger:</p>
+              <h3>{getPokemonNextEvolutionDetails()}</h3>
             </div>
             <div className="evolves">
               <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
