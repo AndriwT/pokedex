@@ -250,78 +250,80 @@ const PokedexPage = () => {
         {/* // ------------------------------------------- Left side ----------------------------------------------------- */}
         {/* // ------------------------------------------- Right side ----------------------------------------------------- */}
         <div className="right-container">
-          <div className="right-above-screen"></div>
-          <div className="right-screen">
-            <h3 style={{ width: "90%" }}>{description}</h3>
-          </div>
-          <div className="little-screens capitalize-me">
-            <div className="little-screen">
-              {`${pokemon && pokemon.stats[0].stat.name}: ${
-                pokemon && pokemon.stats[0].base_stat
-              }`}
+          <div className="right-inner-container">
+            <div className="right-above-screen"></div>
+            <div className="right-screen">
+              <h3 style={{ width: "90%" }}>{description}</h3>
             </div>
-            <div className="little-screen">{`${
-              pokemon && pokemon.stats[1].stat.name
-            }: ${pokemon && pokemon.stats[1]?.base_stat}`}</div>
-            <div className="little-screen">{`${
-              pokemon && pokemon.stats[2].stat.name
-            }: ${pokemon && pokemon.stats[2].base_stat}`}</div>
-          </div>
-          <div
-            className="little-screens capitalize-me"
-            style={{ marginTop: 0 }}
-          >
-            <div className="little-screen">{`${
-              pokemon && pokemon.stats[3].stat.name
-            }: ${pokemon && pokemon.stats[3].base_stat}`}</div>
-            <div className="little-screen">{`${
-              pokemon && pokemon.stats[4].stat.name
-            }: ${pokemon && pokemon.stats[4].base_stat}`}</div>
-            <div className="little-screen">{`${
-              pokemon && pokemon.stats[5].stat.name
-            }: ${pokemon && pokemon.stats[5].base_stat}`}</div>
-          </div>
-          <div className="measurements-container">
-            <div className="measurement-screen">{`Height: ${
-              pokemon && pokemon.height
-            }`}</div>
-            <div className="measurement-screen">{`Weight: ${
-              pokemon && pokemon.weight
-            }`}</div>
+            <div className="little-screens capitalize-me">
+              <div className="little-screen">
+                {`${pokemon && pokemon.stats[0].stat.name}: ${
+                  pokemon && pokemon.stats[0].base_stat
+                }`}
+              </div>
+              <div className="little-screen">{`${
+                pokemon && pokemon.stats[1].stat.name
+              }: ${pokemon && pokemon.stats[1]?.base_stat}`}</div>
+              <div className="little-screen">{`${
+                pokemon && pokemon.stats[2].stat.name
+              }: ${pokemon && pokemon.stats[2].base_stat}`}</div>
+            </div>
+            <div
+              className="little-screens capitalize-me"
+              style={{ marginTop: 0 }}
+            >
+              <div className="little-screen">{`${
+                pokemon && pokemon.stats[3].stat.name
+              }: ${pokemon && pokemon.stats[3].base_stat}`}</div>
+              <div className="little-screen">{`${
+                pokemon && pokemon.stats[4].stat.name
+              }: ${pokemon && pokemon.stats[4].base_stat}`}</div>
+              <div className="little-screen">{`${
+                pokemon && pokemon.stats[5].stat.name
+              }: ${pokemon && pokemon.stats[5].base_stat}`}</div>
+            </div>
+            <div className="measurements-container">
+              <div className="measurement-screen">{`Height: ${
+                pokemon && pokemon.height
+              }`}</div>
+              <div className="measurement-screen">{`Weight: ${
+                pokemon && pokemon.weight
+              }`}</div>
 
-            <div className="shape-container">{`Shape: ${
-              bio && bio.shape.name
-            }`}</div>
-          </div>
-          <div className="evolution-container">
-            <div className="evolves">
-              <h3 className="capitalize-me">
-                {bio && bio.evolves_from_species !== null
-                  ? bio.evolves_from_species.name
-                  : null}
-              </h3>
+              <div className="shape-container">{`Shape: ${
+                bio && bio.shape.name
+              }`}</div>
             </div>
-            <div className="trigger-container">
-              <p>Evolution Level or Trigger:</p>
-              <h3>{getPokemonNextEvolutionDetails()}</h3>
-              <h3>{getPokemonSecondNextEvolutionDetails()}</h3>
+            <div className="evolution-container">
+              <div className="evolves">
+                <h3 className="capitalize-me">
+                  {bio && bio.evolves_from_species !== null
+                    ? bio.evolves_from_species.name
+                    : null}
+                </h3>
+              </div>
+              <div className="trigger-container">
+                <p>Evolution Level or Trigger:</p>
+                <h3>{getPokemonNextEvolutionDetails()}</h3>
+                <h3>{getPokemonSecondNextEvolutionDetails()}</h3>
+              </div>
+              <div className="evolves">
+                <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
+              </div>
             </div>
-            <div className="evolves">
-              <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
-            </div>
-          </div>
-          <div className="types-container">
-            <div className="type">
-              <h3 className="capitalize-me">
-                {pokemon && pokemon.types[0].type.name}
-              </h3>
-            </div>
-            <div className="type">
-              <h3 className="capitalize-me">
-                {pokemon && pokemon.types[1]
-                  ? pokemon.types[1].type.name
-                  : null}
-              </h3>
+            <div className="types-container">
+              <div className="type">
+                <h3 className="capitalize-me">
+                  {pokemon && pokemon.types[0].type.name}
+                </h3>
+              </div>
+              <div className="type">
+                <h3 className="capitalize-me">
+                  {pokemon && pokemon.types[1]
+                    ? pokemon.types[1].type.name
+                    : null}
+                </h3>
+              </div>
             </div>
           </div>
         </div>
