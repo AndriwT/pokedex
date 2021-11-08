@@ -130,6 +130,44 @@ const PokedexPage = () => {
     }
   };
 
+  // ------------------------------------------GETTING A SECOND EVOLUTION TRIGGER --------------------------------- //
+
+  const getPokemonSecondNextEvolutionDetails = () => {
+    // let evolutionChain = evolution && evolution.chain.evolves_to;
+    if (evolution && evolution.chain.evolves_to.length !== 0) {
+      if (evolution.chain.species.name === pokemon.name) {
+        console.log(pokemon);
+        const minLevel =
+          evolution.chain.evolves_to[1]?.evolution_details[0]?.min_level;
+        const itemName =
+          evolution.chain.evolves_to[1]?.evolution_details[0]?.item?.name;
+        const triggerName =
+          evolution.chain.evolves_to[1]?.evolution_details[0]?.trigger?.name;
+        return minLevel || itemName || triggerName;
+      } else if (
+        evolution &&
+        evolution.chain.evolves_to[0].evolves_to[1]?.evolution_details[0] &&
+        evolution.chain.evolves_to[0].species.name === pokemon.name &&
+        evolution.chain.evolves_to[0].evolves_to.length !== 0
+      ) {
+        const minLevel =
+          evolution.chain.evolves_to[0].evolves_to[1].evolution_details[0]
+            ?.min_level;
+        const itemName =
+          evolution.chain.evolves_to[0].evolves_to[1].evolution_details[0]?.item
+            ?.name;
+        const triggerName =
+          evolution.chain.evolves_to[0].evolves_to[1].evolution_details[0]
+            ?.trigger?.name;
+        return minLevel || itemName || triggerName;
+      } else {
+        return null;
+      }
+    }
+  };
+
+  // ------------------------------------------GETTING A SECOND EVOLUTION TRIGGER --------------------------------- //
+
   const handleChange = (event) => {
     setSearch(event.target.value);
   };
@@ -138,6 +176,7 @@ const PokedexPage = () => {
     event.preventDefault();
     await getPokemon(search);
     await getBio(search);
+    setSearch("");
   };
 
   return (
@@ -162,25 +201,58 @@ const PokedexPage = () => {
                   atl="Front default image of the Pokemon searched"
                 />
               </div>
-              <form>
-                <input
-                  type="text"
-                  onChange={(event) => handleChange(event)}
-                  value={search}
-                />
-                <button onClick={(event) => handleClick(event)}>Search</button>
-              </form>
+              <div style={{ display: "flex", marginTop: "20px" }}>
+                <div className="search-red-dot"></div>
+                <form>
+                  <input
+                    type="text"
+                    onChange={(event) => handleChange(event)}
+                    value={search}
+                    placeholder="name or number..."
+                  />
+                  <button onClick={(event) => handleClick(event)}>
+                    Search
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div
+              className="under-left-screen-details-container"
+              style={{ marginLeft: 0 }}
+            >
+              <div className="grey-circle">
+                <h2>{`#${pokemon && pokemon.id ? pokemon.id : ""}`}</h2>
+              </div>
+              <div
+                className="color-line"
+                style={{ backgroundColor: "red", marginRight: "10px" }}
+              ></div>
+              <div
+                className="color-line"
+                style={{ backgroundColor: "lightBlue" }}
+              ></div>
+            </div>
+            <div className="under-left-screen-container">
+              <div className="trigger-container" style={{ width: "210px" }}>
+                <h1 className="capitalize-me">{pokemon && pokemon.name} </h1>
+              </div>
+              <div class="nav-button" style={{ marginLeft: "100px" }}>
+                <div class="nav-center-circle"></div>
+                <div class="nav-button-vertical"></div>
+                <div class="nav-button-horizontal">
+                  <div class="border-top"></div>
+                  <div class="border-bottom"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         {/* // ------------------------------------------- Left side ----------------------------------------------------- */}
+        {/* // ------------------------------------------- Right side ----------------------------------------------------- */}
         <div className="right-container">
           <div className="right-above-screen"></div>
           <div className="right-screen">
-            <h1 className="capitalize-me">
-              {pokemon && pokemon.name} {pokemon && pokemon.id}
-            </h1>
-            <p style={{ width: "90%" }}>{description}</p>
+            <h3 style={{ width: "90%" }}>{description}</h3>
           </div>
           <div className="little-screens capitalize-me">
             <div className="little-screen">
@@ -216,7 +288,8 @@ const PokedexPage = () => {
             <div className="measurement-screen">{`Weight: ${
               pokemon && pokemon.weight
             }`}</div>
-            <div className="measurement-screen">{`Shape: ${
+
+            <div className="shape-container">{`Shape: ${
               bio && bio.shape.name
             }`}</div>
           </div>
@@ -228,9 +301,10 @@ const PokedexPage = () => {
                   : null}
               </h3>
             </div>
-            <div className="">
+            <div className="trigger-container">
               <p>Evolution Level or Trigger:</p>
               <h3>{getPokemonNextEvolutionDetails()}</h3>
+              <h3>{getPokemonSecondNextEvolutionDetails()}</h3>
             </div>
             <div className="evolves">
               <h3 className="capitalize-me">{getPokemonNextEvolution()}</h3>
@@ -251,6 +325,7 @@ const PokedexPage = () => {
             </div>
           </div>
         </div>
+        {/* // ------------------------------------------- Right side ----------------------------------------------------- */}
       </div>
     </div>
   );
