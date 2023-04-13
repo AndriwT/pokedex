@@ -9,17 +9,18 @@ const PokedexPage = () => {
   const [evolution, setEvolution] = useState();
 
   useEffect(() => {
-    if (bio && bio.flavor_text_entries[1].language.name === "en") {
+    console.log("Bio:", bio);
+    if (bio && bio.flavor_text_entries[1]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[1].flavor_text);
-    } else if (bio && bio.flavor_text_entries[6].language.name === "en") {
+    } else if (bio && bio.flavor_text_entries[6]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[6].flavor_text);
-    } else if (bio && bio.flavor_text_entries[7].language.name === "en") {
+    } else if (bio && bio.flavor_text_entries[7]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[7].flavor_text);
-    } else if (bio && bio.flavor_text_entries[8].language.name === "en") {
+    } else if (bio && bio.flavor_text_entries[8]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[8].flavor_text);
-    } else if (bio && bio.flavor_text_entries[15].language.name === "en") {
+    } else if (bio && bio.flavor_text_entries[15]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[15].flavor_text);
-    } else if (bio && bio.flavor_text_entries[70].language.name === "en") {
+    } else if (bio && bio.flavor_text_entries[70]?.language?.name === "en") {
       setDescription(bio && bio.flavor_text_entries[70].flavor_text);
     }
   }, [bio]);
@@ -40,6 +41,7 @@ const PokedexPage = () => {
     await axios
       .get(`https://pokeapi.co/api/v2/pokemon-species/${name}/`)
       .then((response) => {
+        console.log("00000", response.data);
         setBio(response.data);
         getEvolution(response.data.evolution_chain.url);
         console.log(response.data);
@@ -291,7 +293,7 @@ const PokedexPage = () => {
               }`}</div>
 
               <div className="shape-container">{`Shape: ${
-                bio && bio.shape.name
+                bio && bio.shape?.name
               }`}</div>
             </div>
             <div className="evolution-container">
